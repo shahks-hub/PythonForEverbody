@@ -1,8 +1,11 @@
 # assignment week 3 course 3
-# Scraping Numbers from HTML using Beautiful Soup
-# url to use :  http://py4e-data.dr-chuck.net/comments_1689320.html
+# FOLLOWING LINKS ON PYTHON
+# The program will use urllib to read the HTML from the data files below,
+# extract the href= vaLues from the anchor tags, scan for a tag that is in a particular position
+# relative to the first name in the list, follow that link and repeat the process a number
+# of times and report the last name you find.
 
-from urllib.request import urlopen
+import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 import ssl
 
@@ -11,20 +14,34 @@ ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
-url = input('Enter - ')
-html = urlopen(url, context=ctx).read()
-soup = BeautifulSoup(html, "html.parser")
-count = 0
-sum = 0
-tags = soup('span')
-for tag in tags:
-    count += 1
-    x = tag.contents[0]
-    y = int(x)
-    sum = sum + y
 
-print('Count', count)
-print('Sum' , sum)
+url = input('Enter URL')
+count = int(input('Enter count '))
+position = int(input('Enter position '))-1
+
+
+for i in range(count):
+   html = urllib.request.urlopen(url, context=ctx).read()
+   soup = BeautifulSoup(html, 'html.parser')
+   tag = soup('a')
+   link = (tag[position].get('href', None))
+   url = link
+   print('Retrieving:',link)
+   html = urllib.request.urlopen(url, context=ctx).read()
+   soup = BeautifulSoup(html, 'html.parser')
+   tag = soup('a')
+   name = tag[position].contents[0]
+
+
+
+
+
+
+
+
+# name = tags[pos].contents[0] #Taking only the content from the desired positioned string
+# print(name) #Printing the name
+
 
 
 
